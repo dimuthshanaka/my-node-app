@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the map with extended zoom options
     const map = L.map('map', {
         minZoom: 5,  // Prevent excessive zoom-out
-        maxZoom: 22, // Support deeper zoom levels
+        maxZoom: 25, // Support deeper zoom levels
         zoomSnap: 0.1 // Allow finer zoom increments
     }).setView([0, 0], 2); // Default to world view
 
     // Add a high-resolution tile layer (MapTiler)
     L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=lk7XYxvKwjKOd2lHjoSC', {
         attribution: '&copy; <a href="https://www.maptiler.com/">MapTiler</a> contributors',
-        maxZoom: 22 // Allow zooming in to level 22
+        maxZoom: 25 // Allow zooming in to level 22
     }).addTo(map);
 
     let boundsAdjusted = false; // Track if bounds are already adjusted
