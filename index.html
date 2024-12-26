@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="/style.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
     <div class="container">
         <h1>Hello from Node.js & Yarn!</h1>
         <img src="/image.png" alt="My Image">
     </div>
+
+    <!-- Map Container -->
+    <div id="map" style="height: 400px; width: 100%;"></div>
+
     <footer>
-        &copy; 2024 My Website. All rights reserved.
+        &copy; 2024 Dimuths Website. All rights reserved.
     </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Custom JS -->
     <script src="/script.js"></script>
 </body>
 </html>
