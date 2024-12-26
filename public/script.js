@@ -1,12 +1,16 @@
 // Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the map
-    const map = L.map('map').setView([0, 0], 2); // Default to world view
+    const map = L.map('map', {
+        minZoom: 5, // Set minimum zoom level to prevent excessive zoom
+    }).setView([0, 0], 2); // Default to world view
 
     // Add a tile layer (the map design)
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
+    let boundsAdjusted = false; // Track if bounds are already adjusted
 
     // Function to generate random colors
     function randomColor() {
@@ -40,10 +44,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 fetch(`/api/nearby?latitude=${latitude}&longitude=${longitude}&radius=500`) // Adjust radius as needed
                     .then(response => response.json())
                     .then(users => {
-                        users.forEach(user => {
-                            L.marker([user.latitude, user.longitude]).addTo(map)
-                                .bindPopup(`${user.name} is here!`);
-                        });
+                        if (users.length > 0) {
+                            const bounds = users.map(user => [user.latitude, user.longitude]);
+
+                            // Add markers for each user
+                            users.forEach(user => {
+                                L.marker([user.latitude, user.longitude]).addTo(map)
+                                    .bindPopup(`${user.name} is here!`);
+                            });
+
+                            // Only fit bounds the first time
+                            if (!boundsAdjusted) {
+                                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+                                boundsAdjusted = true; // Prevent further adjustments
+                            }
+                        } else {
+                            console.log('No nearby users found.');
+                        }
                     });
 
                 // Center the map on the user's location
