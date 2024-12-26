@@ -1,6 +1,3 @@
-// Log a message to the console
-console.log('Script is loaded successfully!');
-
 // Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize the map
@@ -27,11 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
             (position) => {
                 const { latitude, longitude } = position.coords;
 
+                // Generate a unique identifier for the user
+                const uniqueName = `User-${Date.now()}`;
+
                 // Save user location
                 fetch('/api/location', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ name: 'User1', latitude, longitude }) // Replace 'User1' with dynamic user info
+                    body: JSON.stringify({ name: uniqueName, latitude, longitude })
                 })
                     .then(response => response.json())
                     .then(data => console.log(data));
