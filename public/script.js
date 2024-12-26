@@ -3,14 +3,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the map with extended zoom options
     const map = L.map('map', {
         minZoom: 5,  // Prevent excessive zoom-out
-        maxZoom: 21, // Allow higher zoom levels for close users
-        zoomSnap: 0.5 // Allow finer zoom increments
+        maxZoom: 22, // Support deeper zoom levels
+        zoomSnap: 0.1 // Allow finer zoom increments
     }).setView([0, 0], 2); // Default to world view
 
     // Add a high-resolution tile layer (MapTiler)
     L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=lk7XYxvKwjKOd2lHjoSC', {
         attribution: '&copy; <a href="https://www.maptiler.com/">MapTiler</a> contributors',
-        maxZoom: 21 // Support for higher zoom levels
+        maxZoom: 22 // Allow zooming in to level 22
     }).addTo(map);
 
     let boundsAdjusted = false; // Track if bounds are already adjusted
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             // Only fit bounds the first time
                             if (!boundsAdjusted) {
-                                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 21 });
+                                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 22 });
                                 boundsAdjusted = true; // Prevent further adjustments
                             }
                         } else {
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                 // Center the map on the user's location
-                map.setView([latitude, longitude], 15);
+                map.setView([latitude, longitude], 18); // Default closer zoom for user
                 L.marker([latitude, longitude]).addTo(map)
                     .bindPopup('You are here!')
                     .openPopup();
