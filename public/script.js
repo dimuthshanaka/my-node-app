@@ -1,13 +1,16 @@
 // Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize the map
+    // Initialize the map with extended zoom options
     const map = L.map('map', {
-        minZoom: 5, // Set minimum zoom level to prevent excessive zoom
+        minZoom: 5,  // Prevent excessive zoom-out
+        maxZoom: 21, // Allow higher zoom levels for close users
+        zoomSnap: 0.5 // Allow finer zoom increments
     }).setView([0, 0], 2); // Default to world view
 
-    // Add a tile layer (the map design)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    // Add a high-resolution tile layer (MapTiler)
+    L.tileLayer('https://api.maptiler.com/maps/basic/{z}/{x}/{y}.png?key=lk7XYxvKwjKOd2lHjoSC', {
+        attribution: '&copy; <a href="https://www.maptiler.com/">MapTiler</a> contributors',
+        maxZoom: 21 // Support for higher zoom levels
     }).addTo(map);
 
     let boundsAdjusted = false; // Track if bounds are already adjusted
@@ -55,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             // Only fit bounds the first time
                             if (!boundsAdjusted) {
-                                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 15 });
+                                map.fitBounds(bounds, { padding: [50, 50], maxZoom: 21 });
                                 boundsAdjusted = true; // Prevent further adjustments
                             }
                         } else {
@@ -64,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
 
                 // Center the map on the user's location
-                map.setView([latitude, longitude], 13);
+                map.setView([latitude, longitude], 15);
                 L.marker([latitude, longitude]).addTo(map)
                     .bindPopup('You are here!')
                     .openPopup();
