@@ -12,38 +12,17 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <style>
-        /* Adjusted CSS */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            text-align: center;
-            margin: 20px 0;
-        }
-
-        .container img {
+        /* Adjusted styles for image and map */
+        img {
             width: 30%; /* Reduce image size */
             height: auto; /* Maintain aspect ratio */
-            margin-bottom: 20px; /* Add spacing below the image */
+            display: block;
+            margin: 10px auto; /* Center the image with some spacing */
         }
 
         #map {
-            width: 100%;
-            height: 600px; /* Increase map size */
-            margin-top: 20px;
-        }
-
-        footer {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 0.9em;
-            color: #555;
+            height: 600px; /* Increase map height */
+            width: 100%; /* Full width */
         }
     </style>
 </head>
@@ -62,20 +41,8 @@
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script>
-        // Initialize the map
-        const map = L.map('map').setView([51.505, -0.09], 13); // Center on a sample location
 
-        // Add a tile layer to the map
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        // Add a marker to the map
-        L.marker([51.505, -0.09]).addTo(map)
-            .bindPopup('A sample marker.')
-            .openPopup();
-    </script>
+    <!-- Custom JS -->
+    <script src="/script.js"></script>
 </body>
 </html>
