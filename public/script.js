@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then(data => console.log(data));
 
                 // Fetch and display nearby users
-                fetch(`/api/nearby?latitude=${latitude}&longitude=${longitude}&radius=5`) // Adjust radius as needed
+                fetch(`/api/nearby?latitude=${latitude}&longitude=${longitude}&radius=500`) // Adjust radius as needed
                     .then(response => response.json())
                     .then(users => {
                         users.forEach(user => {
