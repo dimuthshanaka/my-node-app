@@ -3,10 +3,6 @@ console.log('Script is loaded successfully!');
 
 // Wait for the DOM to load
 document.addEventListener('DOMContentLoaded', () => {
-    // Change the header text when the page loads
-    const header = document.querySelector('h1');
-    header.textContent = "It's Dimuth's Blue Nail app, under construction!";
-
     // Initialize the map
     const map = L.map('map').setView([0, 0], 2); // Default to world view
 
@@ -15,16 +11,43 @@ document.addEventListener('DOMContentLoaded', () => {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    // Function to generate random colors
+    function randomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
     // Try to get the user's location
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const { latitude, longitude } = position.coords;
 
-                // Set the map view to the user's location
-                map.setView([latitude, longitude], 13);
+                // Save user location
+                fetch('/api/location', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: 'User1', latitude, longitude }) // Replace 'User1' with dynamic user info
+                })
+                    .then(response => response.json())
+                    .then(data => console.log(data));
 
-                // Add a marker to the map
+                // Fetch and display nearby users
+                fetch(`/api/nearby?latitude=${latitude}&longitude=${longitude}&radius=5`) // Adjust radius as needed
+                    .then(response => response.json())
+                    .then(users => {
+                        users.forEach(user => {
+                            L.marker([user.latitude, user.longitude]).addTo(map)
+                                .bindPopup(`${user.name} is here!`);
+                        });
+                    });
+
+                // Center the map on the user's location
+                map.setView([latitude, longitude], 13);
                 L.marker([latitude, longitude]).addTo(map)
                     .bindPopup('You are here!')
                     .openPopup();
@@ -35,6 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     } else {
         console.error('Geolocation is not supported by this browser.');
+    }
+
+    // Change the header text when the page loads
+    const header = document.querySelector('h1');
+    if (header) {
+        header.textContent = "It's Dimuth's Blue Nail app, under construction!";
     }
 
     // Add a click event to the image
@@ -49,14 +78,4 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.addEventListener('click', () => {
         document.body.style.backgroundColor = randomColor();
     });
-
-    // Function to generate random colors
-    function randomColor() {
-        const letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        return color;
-    }
 });
